@@ -2,6 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 // SVG Icons
 const PhoneIcon = () => (
@@ -43,8 +48,33 @@ const servicesCol2 = [
 ];
 
 export default function Footer() {
+  const footerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Footer columns stagger in
+      gsap.fromTo(
+        ".footer-col",
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: footerRef.current,
+            start: "top 90%",
+          },
+        }
+      );
+    }, footerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <footer className="relative bg-[#2a1f1a] overflow-hidden">
+    <footer ref={footerRef} className="relative bg-[#2a1f1a] overflow-hidden">
       {/* Subtle wood grain texture overlay */}
       <div 
         className="absolute inset-0 opacity-10"
@@ -56,8 +86,8 @@ export default function Footer() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Logo */}
-          <div className="lg:col-span-1">
-            <Link href="/">
+          <div className="footer-col lg:col-span-1">
+            <Link href="/" className="block transition-transform duration-300 hover:scale-105">
               <div className="relative w-28 h-28 mb-4">
                 <Image
                   src="/images/logo.png"
@@ -70,7 +100,7 @@ export default function Footer() {
           </div>
 
           {/* Quick Links */}
-          <div>
+          <div className="footer-col">
             <h3 className="font-heading text-xs font-bold uppercase text-[#c9a86c] mb-4 tracking-widest">
               Quick Links
             </h3>
@@ -79,7 +109,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-[#b8a88a] hover:text-primary transition-colors"
+                    className="text-sm text-[#b8a88a] hover:text-primary transition-all duration-300 hover:translate-x-1 inline-block"
                   >
                     {link.label}
                   </Link>
@@ -89,7 +119,7 @@ export default function Footer() {
           </div>
 
           {/* Services Column 1 */}
-          <div>
+          <div className="footer-col">
             <h3 className="font-heading text-xs font-bold uppercase text-[#c9a86c] mb-4 tracking-widest">
               Services
             </h3>
@@ -98,7 +128,7 @@ export default function Footer() {
                 <li key={service.label}>
                   <Link
                     href={service.href}
-                    className="text-sm text-[#b8a88a] hover:text-primary transition-colors"
+                    className="text-sm text-[#b8a88a] hover:text-primary transition-all duration-300 hover:translate-x-1 inline-block"
                   >
                     {service.label}
                   </Link>
@@ -108,13 +138,13 @@ export default function Footer() {
           </div>
 
           {/* Services Column 2 */}
-          <div className="lg:pt-8">
+          <div className="footer-col lg:pt-8">
             <ul className="space-y-2.5">
               {servicesCol2.map((service) => (
                 <li key={service.label}>
                   <Link
                     href={service.href}
-                    className="text-sm text-[#b8a88a] hover:text-primary transition-colors"
+                    className="text-sm text-[#b8a88a] hover:text-primary transition-all duration-300 hover:translate-x-1 inline-block"
                   >
                     {service.label}
                   </Link>
@@ -124,7 +154,7 @@ export default function Footer() {
           </div>
 
           {/* Contact Us */}
-          <div>
+          <div className="footer-col">
             <h3 className="font-heading text-xs font-bold uppercase text-[#c9a86c] mb-4 tracking-widest">
               Contact Us
             </h3>
@@ -132,18 +162,18 @@ export default function Footer() {
               <li>
                 <a
                   href="tel:6165550146"
-                  className="flex items-center gap-2.5 text-sm text-[#b8a88a] hover:text-primary transition-colors"
+                  className="group flex items-center gap-2.5 text-sm text-[#b8a88a] hover:text-primary transition-all duration-300"
                 >
-                  <span className="text-primary"><PhoneIcon /></span>
+                  <span className="text-primary transition-transform duration-300 group-hover:scale-110"><PhoneIcon /></span>
                   (616) 555-0146
                 </a>
               </li>
               <li>
                 <a
                   href="mailto:info@macstimbera"
-                  className="flex items-center gap-2.5 text-sm text-[#b8a88a] hover:text-primary transition-colors"
+                  className="group flex items-center gap-2.5 text-sm text-[#b8a88a] hover:text-primary transition-all duration-300"
                 >
-                  <span className="text-primary"><MailIcon /></span>
+                  <span className="text-primary transition-transform duration-300 group-hover:scale-110"><MailIcon /></span>
                   info@macstimbera
                 </a>
               </li>
@@ -155,7 +185,7 @@ export default function Footer() {
                   href="https://facebook.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center w-10 h-10 bg-[#3a2f2a] rounded-full text-[#b8a88a] hover:text-primary hover:bg-[#4a3f3a] transition-colors"
+                  className="inline-flex items-center justify-center w-10 h-10 bg-[#3a2f2a] rounded-full text-[#b8a88a] hover:text-primary hover:bg-[#4a3f3a] transition-all duration-300 hover:scale-110"
                   aria-label="Facebook"
                 >
                   <FacebookIcon />

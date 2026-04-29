@@ -70,18 +70,74 @@ export default function OurProcess() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Header animation
+      gsap.fromTo(
+        ".process-header",
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 85%",
+          },
+        }
+      );
+
+      // Process cards slide in from left with stagger
       gsap.fromTo(
         ".process-card",
-        { opacity: 0, x: -30 },
+        { opacity: 0, x: -60, scale: 0.95 },
         {
           opacity: 1,
           x: 0,
-          duration: 0.6,
-          stagger: 0.2,
+          scale: 1,
+          duration: 0.8,
+          stagger: {
+            each: 0.15,
+            ease: "power2.out",
+          },
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".process-grid",
+            start: "top 80%",
+          },
+        }
+      );
+
+      // Arrows fade in after cards
+      gsap.fromTo(
+        ".process-arrow",
+        { opacity: 0, x: -10 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.4,
+          stagger: 0.15,
           ease: "power2.out",
           scrollTrigger: {
-            trigger: sectionRef.current,
+            trigger: ".process-grid",
             start: "top 75%",
+          },
+          delay: 0.5,
+        }
+      );
+
+      // Step numbers count up effect via scale
+      gsap.fromTo(
+        ".step-number",
+        { scale: 0.5, opacity: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.6,
+          stagger: 0.2,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: ".process-grid",
+            start: "top 80%",
           },
         }
       );
@@ -94,7 +150,7 @@ export default function OurProcess() {
     <section ref={sectionRef} className="py-16 bg-[#3d3529]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-12">
+        <div className="process-header text-center mb-12">
           <p className="text-sm font-medium text-white/60 uppercase tracking-widest mb-3">
             Our Process
           </p>
@@ -104,13 +160,13 @@ export default function OurProcess() {
         </div>
 
         {/* Process Steps */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="process-grid grid grid-cols-1 md:grid-cols-3 gap-4">
           {steps.map((step, index) => (
             <div key={index} className="relative flex items-stretch">
               <div className="process-card flex-1 bg-[#4a4035] rounded-lg p-5 flex items-start gap-4">
                 {/* Step Number */}
                 <div className="flex-shrink-0">
-                  <span className="font-heading text-4xl font-bold text-primary">
+                  <span className="step-number font-heading text-4xl font-bold text-primary inline-block">
                     {step.number}
                   </span>
                 </div>
@@ -133,7 +189,7 @@ export default function OurProcess() {
 
               {/* Arrow connector (except last item) */}
               {index < steps.length - 1 && (
-                <div className="hidden md:flex items-center justify-center w-8 -mr-4 z-10">
+                <div className="process-arrow hidden md:flex items-center justify-center w-8 -mr-4 z-10">
                   <ArrowIcon />
                 </div>
               )}
