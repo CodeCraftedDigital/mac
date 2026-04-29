@@ -238,11 +238,69 @@ img {
   transform: translateX(100%);
 }
 
-/* Image hover zoom */
-.img-zoom {
-  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+/* Premium Image Hover System */
+.img-hover-zoom {
+  will-change: transform;
+  transform: scale(1) translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.group:hover .img-zoom {
-  transform: scale(1.1);
+.group:hover .img-hover-zoom {
+  transform: scale(1.08) translateZ(0);
+}
+
+/* Card hover lift effect */
+.card-hover {
+  will-change: transform, box-shadow;
+  transform: translateY(0) translateZ(0);
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              box-shadow 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card-hover:hover {
+  transform: translateY(-8px) translateZ(0);
+}
+
+/* Smooth overlay fade */
+.overlay-fade {
+  opacity: 0;
+  transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.group:hover .overlay-fade {
+  opacity: 1;
+}
+
+/* Force GPU layer for all images in overflow hidden containers */
+.overflow-hidden img {
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Premium dropdown menu item animations */
+.dropdown-item {
+  transition: color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.dropdown-bg {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.dropdown-text {
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.dropdown-item:hover .dropdown-bg {
+  transform: scaleX(1);
+}
+
+.dropdown-item:hover .dropdown-text {
+  transform: translateX(6px);
 }

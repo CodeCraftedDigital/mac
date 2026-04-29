@@ -141,7 +141,7 @@ export default function Projects() {
                       src={project.beforeImage}
                       alt={`${project.title} Before`}
                       fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      className="object-cover img-hover-zoom"
                     />
                     <div className="before-label absolute top-2 left-2 px-2 py-0.5 bg-black/80 text-white text-[10px] font-bold uppercase rounded">
                       Before
@@ -153,7 +153,7 @@ export default function Projects() {
                       src={project.afterImage}
                       alt={`${project.title} After`}
                       fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      className="object-cover img-hover-zoom"
                     />
                     <div className="after-label absolute top-2 right-2 px-2 py-0.5 bg-primary text-white text-[10px] font-bold uppercase rounded">
                       After

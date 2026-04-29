@@ -83,7 +83,8 @@ export default function CTA() {
           src="/images/cta-bg.jpg"
           alt="Forest background"
           fill
-          className="cta-bg object-cover"
+          className="cta-bg object-cover will-change-transform"
+          style={{ backfaceVisibility: 'hidden' }}
         />
         <div className="absolute inset-0 bg-black/70" />
       </div>

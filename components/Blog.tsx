@@ -122,7 +122,7 @@ export default function Blog() {
             <Link
               key={index}
               href={article.href}
-              className="blog-card group bg-[#2a2520] rounded-lg overflow-hidden hover:shadow-2xl transition-all duration-500 ease-out hover:-translate-y-2"
+              className="blog-card group bg-[#2a2520] rounded-lg overflow-hidden card-hover hover:shadow-2xl"
             >
               {/* Image */}
               <div className="relative h-40 overflow-hidden">
@@ -130,9 +130,9 @@ export default function Blog() {
                   src={article.image}
                   alt={article.title}
                   fill
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                  className="object-cover img-hover-zoom"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent overlay-fade" />
               </div>
 
               {/* Content */}

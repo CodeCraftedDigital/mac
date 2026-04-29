@@ -119,7 +119,8 @@ export default function Hero() {
           src="/images/hero-bg.jpg"
           alt="Excavator working in forest"
           fill
-          className="hero-bg object-cover"
+          className="hero-bg object-cover will-change-transform"
+          style={{ backfaceVisibility: 'hidden' }}
           priority
         />
         {/* Darker overlay gradient */}

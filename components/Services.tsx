@@ -127,14 +127,14 @@ export default function Services() {
             <Link
               key={service.title}
               href={service.href}
-              className="service-card group bg-white rounded-lg overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 ease-out hover:-translate-y-2"
+              className="service-card group bg-white rounded-lg overflow-hidden shadow-md card-hover hover:shadow-2xl"
             >
               <div className="relative h-32 sm:h-36 overflow-hidden">
                 <Image
                   src={service.image}
                   alt={service.title}
                   fill
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                  className="object-cover img-hover-zoom"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
               </div>

@@ -280,16 +280,15 @@ export default function Header() {
                   <div 
                     className="absolute top-full left-0 mt-2 w-56 bg-[#2a2520] rounded-lg shadow-xl border border-[#3d3529] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200"
                   >
-                    {item.items?.map((subItem, subIndex) => (
+                    {item.items?.map((subItem) => (
                       <Link
                         key={subItem.label}
                         href={subItem.href}
-                        className="group relative flex items-center px-4 py-3 text-sm text-white/80 hover:text-white transition-all duration-300"
+                        className="dropdown-item group relative flex items-center px-4 py-3 text-sm text-white/80 hover:text-white"
                         onClick={() => setOpenDropdown(null)}
-                        style={{ animationDelay: `${subIndex * 50}ms` }}
                       >
-                        <span className="absolute inset-0 bg-primary scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100" />
-                        <span className="relative z-10 transition-transform duration-300 group-hover:translate-x-1">{subItem.label}</span>
+                        <span className="dropdown-bg absolute inset-0 bg-primary" />
+                        <span className="dropdown-text relative z-10">{subItem.label}</span>
                       </Link>
                     ))}
                   </div>
