@@ -67,9 +67,27 @@ export default function Header() {
   const overlayRef = useRef<HTMLDivElement>(null);
   const menuItemsRef = useRef<HTMLDivElement[]>([]);
   const ctaButtonsRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
   const [isVisible, setIsVisible] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+
+    if (openDropdown) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openDropdown]);
 
   // Sticky header on scroll up
   useEffect(() => {
@@ -220,25 +238,35 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-6">
+          <nav ref={dropdownRef} className="hidden lg:flex items-center gap-6">
             {navItems.map((item) => (
-              <div
-                key={item.label}
-                className="relative"
-                onMouseEnter={() => item.dropdown && setOpenDropdown(item.label)}
-                onMouseLeave={() => setOpenDropdown(null)}
-              >
-                <Link
-                  href={item.href}
-                  className={`flex items-center gap-1 text-[13px] font-semibold uppercase tracking-wider transition-colors ${
-                    item.active
-                      ? "text-primary"
-                      : "text-white/90 hover:text-primary"
-                  }`}
-                >
-                  {item.label}
-                  {item.dropdown && <ChevronDownIcon />}
-                </Link>
+              <div key={item.label} className="relative">
+                {item.dropdown ? (
+                  <button
+                    onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
+                    className={`flex items-center gap-1 text-[13px] font-semibold uppercase tracking-wider transition-colors ${
+                      item.active
+                        ? "text-primary"
+                        : "text-white/90 hover:text-primary"
+                    }`}
+                  >
+                    {item.label}
+                    <span className={`transition-transform duration-200 ${openDropdown === item.label ? "rotate-180" : ""}`}>
+                      <ChevronDownIcon />
+                    </span>
+                  </button>
+                ) : (
+                  <Link
+                    href={item.href}
+                    className={`flex items-center gap-1 text-[13px] font-semibold uppercase tracking-wider transition-colors ${
+                      item.active
+                        ? "text-primary"
+                        : "text-white/90 hover:text-primary"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                )}
 
                 {/* Dropdown Menu */}
                 {item.dropdown && openDropdown === item.label && (
@@ -248,6 +276,7 @@ export default function Header() {
                         key={subItem.label}
                         href={subItem.href}
                         className="block px-4 py-3 text-sm text-white/80 hover:bg-primary hover:text-white transition-colors"
+                        onClick={() => setOpenDropdown(null)}
                       >
                         {subItem.label}
                       </Link>
