@@ -323,99 +323,100 @@ export default function Header() {
           </button>
         </div>
 
-        {/* Mobile Menu - Sheet from Right */}
-        {mobileMenuOpen && (
-          <>
-            {/* Overlay */}
-            <div
-              ref={overlayRef}
-              className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
-              onClick={closeMenu}
-            />
-            
-            {/* Sheet Panel */}
-            <div
-              ref={mobileMenuRef}
-              className="lg:hidden fixed top-0 right-0 bottom-0 w-[85%] max-w-[360px] bg-[#1a1a1a] z-50 flex flex-col shadow-2xl border-l border-white/10"
-            >
-              {/* Header with Logo and Close */}
-              <div className="flex items-center justify-between p-5 border-b border-white/10">
-                <Link href="/" onClick={closeMenu} className="flex-shrink-0">
-                  <div className="relative w-[80px] h-[80px]">
-                    <Image
-                      src="/images/logo.png"
-                      alt="Mac's Timber & Terra"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                </Link>
-                <button
-                  onClick={closeMenu}
-                  className="p-2 text-white/70 hover:text-white transition-colors"
-                  aria-label="Close menu"
-                >
-                  <CloseIcon />
-                </button>
-              </div>
+        </div>
 
-              {/* Navigation Items */}
-              <nav className="flex-1 overflow-y-auto py-4 px-5">
-                {navItems.map((item) => (
-                  <div key={item.label} ref={addToRefs}>
-                    <Link
-                      href={item.href}
-                      className={`block py-4 text-lg font-heading font-bold uppercase tracking-wider border-b border-white/5 transition-colors ${
-                        item.active
-                          ? "text-primary"
-                          : "text-white/90 hover:text-primary"
-                      }`}
-                      onClick={closeMenu}
-                    >
-                      {item.label}
-                    </Link>
-                    {item.dropdown &&
-                      item.items?.map((subItem) => (
-                        <Link
-                          key={subItem.label}
-                          href={subItem.href}
-                          className="block py-2.5 pl-4 text-sm text-white/50 hover:text-primary transition-colors"
-                          onClick={closeMenu}
-                        >
-                          {subItem.label}
-                        </Link>
-                      ))}
-                  </div>
-                ))}
-              </nav>
-
-              {/* CTA Buttons at Bottom */}
-              <div ref={ctaButtonsRef} className="p-5 border-t border-white/10 space-y-3">
-                <Link
-                  href="/contact"
-                  className="flex items-center justify-center gap-2 w-full px-5 py-3.5 bg-primary text-white font-semibold text-sm uppercase tracking-wider rounded hover:bg-primary/90 transition-all"
-                  onClick={closeMenu}
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                  </svg>
-                  Request an Estimate
-                </Link>
-                <a
-                  href="tel:6165550146"
-                  className="flex items-center justify-center gap-2 w-full px-5 py-3.5 bg-transparent border border-white/20 text-white font-semibold text-sm uppercase tracking-wider rounded hover:bg-white/5 transition-all"
-                  onClick={closeMenu}
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                  </svg>
-                  (616) 555-0146
-                </a>
-              </div>
+      {/* Mobile Menu - Sheet from Right - Rendered outside header container for proper fixed positioning */}
+      {mobileMenuOpen && (
+        <>
+          {/* Overlay */}
+          <div
+            ref={overlayRef}
+            className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
+            onClick={closeMenu}
+          />
+          
+          {/* Sheet Panel */}
+          <div
+            ref={mobileMenuRef}
+            className="lg:hidden fixed top-0 right-0 bottom-0 w-[85%] max-w-[360px] bg-[#1a1a1a] z-[101] flex flex-col shadow-2xl border-l border-white/10"
+          >
+            {/* Header with Logo and Close */}
+            <div className="flex items-center justify-between p-5 border-b border-white/10">
+              <Link href="/" onClick={closeMenu} className="flex-shrink-0">
+                <div className="relative w-[80px] h-[80px]">
+                  <Image
+                    src="/images/logo.png"
+                    alt="Mac's Timber & Terra"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </Link>
+              <button
+                onClick={closeMenu}
+                className="p-2 text-white/70 hover:text-white transition-colors"
+                aria-label="Close menu"
+              >
+                <CloseIcon />
+              </button>
             </div>
-          </>
-        )}
-      </div>
+
+            {/* Navigation Items */}
+            <nav className="flex-1 overflow-y-auto py-4 px-5">
+              {navItems.map((item) => (
+                <div key={item.label} ref={addToRefs}>
+                  <Link
+                    href={item.href}
+                    className={`block py-4 text-lg font-heading font-bold uppercase tracking-wider border-b border-white/5 transition-colors ${
+                      item.active
+                        ? "text-primary"
+                        : "text-white/90 hover:text-primary"
+                    }`}
+                    onClick={closeMenu}
+                  >
+                    {item.label}
+                  </Link>
+                  {item.dropdown &&
+                    item.items?.map((subItem) => (
+                      <Link
+                        key={subItem.label}
+                        href={subItem.href}
+                        className="block py-2.5 pl-4 text-sm text-white/50 hover:text-primary transition-colors"
+                        onClick={closeMenu}
+                      >
+                        {subItem.label}
+                      </Link>
+                    ))}
+                </div>
+              ))}
+            </nav>
+
+            {/* CTA Buttons at Bottom */}
+            <div ref={ctaButtonsRef} className="p-5 border-t border-white/10 space-y-3">
+              <Link
+                href="/contact"
+                className="flex items-center justify-center gap-2 w-full px-5 py-3.5 bg-primary text-white font-semibold text-sm uppercase tracking-wider rounded hover:bg-primary/90 transition-all"
+                onClick={closeMenu}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
+                Request an Estimate
+              </Link>
+              <a
+                href="tel:6165550146"
+                className="flex items-center justify-center gap-2 w-full px-5 py-3.5 bg-transparent border border-white/20 text-white font-semibold text-sm uppercase tracking-wider rounded hover:bg-white/5 transition-all"
+                onClick={closeMenu}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
+                (616) 555-0146
+              </a>
+            </div>
+          </div>
+        </>
+      )}
     </header>
   );
 }
