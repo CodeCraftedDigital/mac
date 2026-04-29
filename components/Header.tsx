@@ -395,16 +395,16 @@ export default function Header() {
                 <div key={item.label} ref={addToRefs}>
                   <Link
                     href={item.href}
-                    className={`group flex items-center justify-between py-3.5 border-b border-white/5 transition-all duration-300 ${
+                    className={`group flex items-center justify-between py-4 border-b border-white/5 transition-all duration-300 ${
                       item.active ? "text-primary" : "text-white/90"
                     }`}
                     onClick={closeMenu}
                   >
-                    <span className="text-sm font-heading font-bold uppercase tracking-wider group-hover:text-primary transition-colors">
+                    <span className="text-base font-heading font-bold uppercase tracking-wider group-hover:text-primary transition-colors">
                       {item.label}
                     </span>
                     <svg 
-                      className="w-4 h-4 text-white/20 group-hover:text-primary group-hover:translate-x-1 transition-all duration-300" 
+                      className="w-5 h-5 text-white/20 group-hover:text-primary group-hover:translate-x-1 transition-all duration-300" 
                       fill="none" 
                       stroke="currentColor" 
                       viewBox="0 0 24 24"
@@ -416,76 +416,21 @@ export default function Header() {
               ))}
             </nav>
 
-            {/* Fixed Bottom Section - Quick Actions */}
-            <div ref={ctaButtonsRef} className="flex-shrink-0 border-t border-white/10 bg-black/40">
-              {/* Quick Action Buttons - Extremely Polished */}
-              <div className="grid grid-cols-4 divide-x divide-white/5">
-                <a
-                  href="tel:6165550146"
-                  className="group flex flex-col items-center justify-center py-4 hover:bg-white/5 transition-all duration-300"
-                >
-                  <div className="w-10 h-10 mb-1.5 flex items-center justify-center rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                    </svg>
-                  </div>
-                  <span className="text-[10px] font-medium text-white/50 uppercase tracking-wide group-hover:text-white/80 transition-colors">Call</span>
-                </a>
-                <a
-                  href="mailto:info@macstimberandterra.com"
-                  className="group flex flex-col items-center justify-center py-4 hover:bg-white/5 transition-all duration-300"
-                >
-                  <div className="w-10 h-10 mb-1.5 flex items-center justify-center rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect width="20" height="16" x="2" y="4" rx="2"/>
-                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-                    </svg>
-                  </div>
-                  <span className="text-[10px] font-medium text-white/50 uppercase tracking-wide group-hover:text-white/80 transition-colors">Email</span>
-                </a>
-                <a
-                  href="https://facebook.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex flex-col items-center justify-center py-4 hover:bg-white/5 transition-all duration-300"
-                >
-                  <div className="w-10 h-10 mb-1.5 flex items-center justify-center rounded-full bg-[#1877f2]/10 text-[#1877f2] group-hover:bg-[#1877f2] group-hover:text-white transition-all duration-300">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-                    </svg>
-                  </div>
-                  <span className="text-[10px] font-medium text-white/50 uppercase tracking-wide group-hover:text-white/80 transition-colors">Follow</span>
-                </a>
-                <Link
-                  href="/contact"
-                  onClick={closeMenu}
-                  className="group flex flex-col items-center justify-center py-4 hover:bg-white/5 transition-all duration-300"
-                >
-                  <div className="w-10 h-10 mb-1.5 flex items-center justify-center rounded-full bg-accent/10 text-accent group-hover:bg-accent group-hover:text-white transition-all duration-300">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                    </svg>
-                  </div>
-                  <span className="text-[10px] font-medium text-white/50 uppercase tracking-wide group-hover:text-white/80 transition-colors">Quote</span>
-                </Link>
-              </div>
-              
-              {/* Primary CTA Button */}
-              <div className="px-4 py-4">
-                <Link
-                  href="/contact"
-                  className="flex items-center justify-center gap-2 w-full py-3.5 bg-primary text-white font-semibold text-sm uppercase tracking-wider rounded-lg hover:bg-primary/90 transition-all duration-300 shadow-lg shadow-primary/25"
-                  onClick={closeMenu}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                    <polyline points="14,2 14,8 20,8"/>
-                    <line x1="16" y1="13" x2="8" y2="13"/>
-                    <line x1="16" y1="17" x2="8" y2="17"/>
-                  </svg>
-                  Request Free Estimate
-                </Link>
-              </div>
+            {/* Primary CTA at Bottom */}
+            <div ref={ctaButtonsRef} className="flex-shrink-0 p-5 border-t border-white/10 bg-black/30">
+              <Link
+                href="/contact"
+                className="flex items-center justify-center gap-2 w-full py-4 bg-primary text-white font-semibold text-sm uppercase tracking-wider rounded-xl hover:bg-primary/90 transition-all duration-300 shadow-lg shadow-primary/25"
+                onClick={closeMenu}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14,2 14,8 20,8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/>
+                  <line x1="16" y1="17" x2="8" y2="17"/>
+                </svg>
+                Request Free Estimate
+              </Link>
             </div>
           </div>
         </>

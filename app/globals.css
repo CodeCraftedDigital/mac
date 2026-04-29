@@ -321,3 +321,15 @@ img {
     transform: translateY(0) scale(1);
   }
 }
+
+/* Mobile Bottom Bar - Safe Area Support */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* Ensure content doesn't get hidden behind the mobile bottom bar */
+@media (max-width: 1023px) {
+  .pb-safe {
+    padding-bottom: calc(80px + env(safe-area-inset-bottom, 0));
+  }
+}
