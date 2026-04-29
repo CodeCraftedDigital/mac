@@ -89,9 +89,13 @@ export default function Header() {
     };
   }, [openDropdown]);
 
-  // Sticky header on scroll up
+  // Sticky header on scroll up - desktop only
   useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+    
     const handleScroll = () => {
+      if (!mediaQuery.matches) return; // Skip on mobile
+      
       const currentScrollY = window.scrollY;
       
       if (currentScrollY < 100) {
@@ -111,14 +115,17 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Animate header visibility - use full header height including logo overflow
+  // Animate header visibility - only on desktop (lg+)
   useEffect(() => {
     if (headerRef.current) {
-      gsap.to(headerRef.current, {
-        y: isVisible ? 0 : "-100%",
-        duration: 0.4,
-        ease: "power3.out",
-      });
+      const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
+      if (isDesktop) {
+        gsap.to(headerRef.current, {
+          y: isVisible ? 0 : "-100%",
+          duration: 0.4,
+          ease: "power3.out",
+        });
+      }
     }
   }, [isVisible]);
 
@@ -218,8 +225,8 @@ export default function Header() {
   return (
     <header
       ref={headerRef}
-      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
-        isScrolled ? "bg-[#1a1a1a]/95 backdrop-blur-md shadow-lg" : "bg-gradient-to-b from-black/70 to-transparent"
+      className={`relative lg:fixed lg:top-0 lg:left-0 lg:right-0 z-50 transition-colors duration-300 ${
+        isScrolled ? "lg:bg-[#1a1a1a]/95 lg:backdrop-blur-md lg:shadow-lg" : "bg-gradient-to-b from-black/70 to-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
