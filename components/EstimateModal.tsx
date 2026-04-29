@@ -103,18 +103,18 @@ export default function EstimateModal({ isOpen, onClose }: EstimateModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[200] flex items-center justify-center px-5 py-8 sm:p-8">
       {/* Overlay */}
       <div
         ref={overlayRef}
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/85 backdrop-blur-sm"
         onClick={handleClose}
       />
 
       {/* Modal */}
       <div
         ref={modalRef}
-        className="relative w-full max-w-lg bg-gradient-to-b from-[#1f1a17] to-[#151210] rounded-2xl shadow-2xl border border-white/10 overflow-hidden"
+        className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-gradient-to-b from-[#1f1a17] to-[#151210] rounded-2xl shadow-2xl border border-white/10"
       >
         {/* Header */}
         <div className="relative px-6 pt-6 pb-4 border-b border-white/5">

@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${oswald.variable} bg-background`}>
-      <body className="font-sans antialiased pb-20 lg:pb-0">
+      <body className="font-sans antialiased pb-16 lg:pb-0">
         <EstimateModalProvider>
           {children}
           <MobileBottomBar />
