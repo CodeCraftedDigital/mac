@@ -64,7 +64,9 @@ export default function Header() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const headerRef = useRef<HTMLElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
   const menuItemsRef = useRef<HTMLDivElement[]>([]);
+  const ctaButtonsRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
   const [isVisible, setIsVisible] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -91,41 +93,103 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Animate header visibility
+  // Animate header visibility - use full header height including logo overflow
   useEffect(() => {
     if (headerRef.current) {
       gsap.to(headerRef.current, {
-        y: isVisible ? 0 : -100,
-        duration: 0.3,
-        ease: "power2.out",
+        y: isVisible ? 0 : "-100%",
+        duration: 0.4,
+        ease: "power3.out",
       });
     }
   }, [isVisible]);
 
-  // Mobile menu animation
+  // Mobile menu animation - premium slide from right with stagger
   useEffect(() => {
-    if (mobileMenuOpen && mobileMenuRef.current) {
-      gsap.fromTo(
-        mobileMenuRef.current,
-        { opacity: 0, y: -20 },
-        { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }
-      );
+    if (mobileMenuOpen) {
+      // Prevent body scroll when menu is open
+      document.body.style.overflow = "hidden";
+      
+      const tl = gsap.timeline();
+      
+      // Fade in overlay
+      if (overlayRef.current) {
+        tl.fromTo(
+          overlayRef.current,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.3, ease: "power2.out" },
+          0
+        );
+      }
+      
+      // Slide in panel from right
+      if (mobileMenuRef.current) {
+        tl.fromTo(
+          mobileMenuRef.current,
+          { x: "100%" },
+          { x: "0%", duration: 0.4, ease: "power3.out" },
+          0.1
+        );
+      }
 
-      // Stagger menu items
-      gsap.fromTo(
-        menuItemsRef.current,
-        { opacity: 0, x: -30 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.4,
-          stagger: 0.05,
-          ease: "power2.out",
-          delay: 0.1,
-        }
-      );
+      // Stagger menu items with premium feel
+      if (menuItemsRef.current.length > 0) {
+        tl.fromTo(
+          menuItemsRef.current,
+          { opacity: 0, x: 40 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.5,
+            stagger: 0.08,
+            ease: "power3.out",
+          },
+          0.25
+        );
+      }
+
+      // Animate CTA buttons
+      if (ctaButtonsRef.current) {
+        tl.fromTo(
+          ctaButtonsRef.current,
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+          0.5
+        );
+      }
+    } else {
+      document.body.style.overflow = "";
     }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [mobileMenuOpen]);
+
+  // Close menu animation
+  const closeMenu = () => {
+    const tl = gsap.timeline({
+      onComplete: () => setMobileMenuOpen(false),
+    });
+
+    if (ctaButtonsRef.current) {
+      tl.to(ctaButtonsRef.current, { opacity: 0, y: 10, duration: 0.2, ease: "power2.in" }, 0);
+    }
+
+    tl.to(
+      menuItemsRef.current.reverse(),
+      { opacity: 0, x: 20, duration: 0.2, stagger: 0.03, ease: "power2.in" },
+      0
+    );
+
+    if (mobileMenuRef.current) {
+      tl.to(mobileMenuRef.current, { x: "100%", duration: 0.3, ease: "power3.in" }, 0.15);
+    }
+
+    if (overlayRef.current) {
+      tl.to(overlayRef.current, { opacity: 0, duration: 0.25, ease: "power2.in" }, 0.2);
+    }
+  };
 
   const addToRefs = (el: HTMLDivElement) => {
     if (el && !menuItemsRef.current.includes(el)) {
@@ -206,59 +270,110 @@ export default function Header() {
           <button
             className="lg:hidden p-2 text-white"
             onClick={() => {
-              menuItemsRef.current = [];
-              setMobileMenuOpen(!mobileMenuOpen);
+              if (mobileMenuOpen) {
+                closeMenu();
+              } else {
+                menuItemsRef.current = [];
+                setMobileMenuOpen(true);
+              }
             }}
             aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
+            <MenuIcon />
           </button>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu - Sheet from Right */}
         {mobileMenuOpen && (
-          <div
-            ref={mobileMenuRef}
-            className="lg:hidden fixed inset-0 top-[84px] bg-[#1a1a1a]/98 backdrop-blur-lg overflow-y-auto"
-          >
-            <nav className="py-8 px-6">
-              {navItems.map((item, index) => (
-                <div key={item.label} ref={addToRefs}>
-                  <Link
-                    href={item.href}
-                    className={`block py-4 text-xl font-heading font-bold uppercase tracking-wider border-b border-white/10 ${
-                      item.active
-                        ? "text-primary"
-                        : "text-white/90 hover:text-primary"
-                    }`}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                  {item.dropdown &&
-                    item.items?.map((subItem) => (
-                      <Link
-                        key={subItem.label}
-                        href={subItem.href}
-                        className="block py-2 pl-4 text-base text-white/60 hover:text-primary"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {subItem.label}
-                      </Link>
-                    ))}
-                </div>
-              ))}
-              <div ref={addToRefs} className="pt-8">
+          <>
+            {/* Overlay */}
+            <div
+              ref={overlayRef}
+              className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+              onClick={closeMenu}
+            />
+            
+            {/* Sheet Panel */}
+            <div
+              ref={mobileMenuRef}
+              className="lg:hidden fixed top-0 right-0 bottom-0 w-[85%] max-w-[360px] bg-[#1a1a1a] z-50 flex flex-col shadow-2xl border-l border-white/10"
+            >
+              {/* Header with Logo and Close */}
+              <div className="flex items-center justify-between p-5 border-b border-white/10">
+                <Link href="/" onClick={closeMenu} className="flex-shrink-0">
+                  <div className="relative w-[80px] h-[80px]">
+                    <Image
+                      src="/images/logo.png"
+                      alt="Mac's Timber & Terra"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                </Link>
+                <button
+                  onClick={closeMenu}
+                  className="p-2 text-white/70 hover:text-white transition-colors"
+                  aria-label="Close menu"
+                >
+                  <CloseIcon />
+                </button>
+              </div>
+
+              {/* Navigation Items */}
+              <nav className="flex-1 overflow-y-auto py-4 px-5">
+                {navItems.map((item) => (
+                  <div key={item.label} ref={addToRefs}>
+                    <Link
+                      href={item.href}
+                      className={`block py-4 text-lg font-heading font-bold uppercase tracking-wider border-b border-white/5 transition-colors ${
+                        item.active
+                          ? "text-primary"
+                          : "text-white/90 hover:text-primary"
+                      }`}
+                      onClick={closeMenu}
+                    >
+                      {item.label}
+                    </Link>
+                    {item.dropdown &&
+                      item.items?.map((subItem) => (
+                        <Link
+                          key={subItem.label}
+                          href={subItem.href}
+                          className="block py-2.5 pl-4 text-sm text-white/50 hover:text-primary transition-colors"
+                          onClick={closeMenu}
+                        >
+                          {subItem.label}
+                        </Link>
+                      ))}
+                  </div>
+                ))}
+              </nav>
+
+              {/* CTA Buttons at Bottom */}
+              <div ref={ctaButtonsRef} className="p-5 border-t border-white/10 space-y-3">
                 <Link
                   href="/contact"
-                  className="block w-full text-center px-6 py-4 bg-primary text-white font-semibold text-base uppercase tracking-wider rounded hover:bg-primary/90 transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-center gap-2 w-full px-5 py-3.5 bg-primary text-white font-semibold text-sm uppercase tracking-wider rounded hover:bg-primary/90 transition-all"
+                  onClick={closeMenu}
                 >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                  </svg>
                   Request an Estimate
                 </Link>
+                <a
+                  href="tel:6165550146"
+                  className="flex items-center justify-center gap-2 w-full px-5 py-3.5 bg-transparent border border-white/20 text-white font-semibold text-sm uppercase tracking-wider rounded hover:bg-white/5 transition-all"
+                  onClick={closeMenu}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                  </svg>
+                  (616) 555-0146
+                </a>
               </div>
-            </nav>
-          </div>
+            </div>
+          </>
         )}
       </div>
     </header>
