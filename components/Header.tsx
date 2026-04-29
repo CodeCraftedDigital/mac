@@ -254,12 +254,12 @@ export default function Header() {
   return (
     <header
       ref={headerRef}
-      className={`relative lg:fixed lg:top-0 lg:left-0 lg:right-0 z-50 transition-colors duration-300 ${
-        isScrolled ? "lg:bg-[#1a1a1a]/95 lg:backdrop-blur-md lg:shadow-lg" : "bg-gradient-to-b from-black/70 to-transparent"
+      className={`relative lg:fixed lg:top-0 lg:left-0 lg:right-0 z-50 transition-colors duration-300 overflow-visible ${
+        isScrolled ? "lg:bg-[#1a1a1a]/95 lg:backdrop-blur-md" : "bg-gradient-to-b from-black/70 to-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between py-2">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-visible">
+        <div className="flex items-center justify-between py-2 overflow-visible">
           {/* Logo - Large and overlapping */}
           <Link href="/" className="flex-shrink-0 relative z-10">
             <div className="relative w-[100px] h-[100px] md:w-[120px] md:h-[120px] -my-2">
@@ -307,13 +307,13 @@ export default function Header() {
                 {/* Dropdown Menu */}
                 {item.dropdown && openDropdown === item.label && (
                   <div 
-                    className="absolute top-full left-0 mt-2 w-56 bg-[#2a2520] rounded-lg shadow-xl border border-[#3d3529] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200"
+                    className="absolute top-full left-0 mt-3 w-56 bg-[#2a2520] rounded-lg shadow-2xl border border-[#3d3529] z-[60] dropdown-menu"
                   >
                     {item.items?.map((subItem) => (
                       <Link
                         key={subItem.label}
                         href={subItem.href}
-                        className="dropdown-item group relative flex items-center px-4 py-3 text-sm text-white/80 hover:text-white"
+                        className="dropdown-item group relative flex items-center px-4 py-3 text-sm text-white/80 hover:text-white overflow-hidden first:rounded-t-lg last:rounded-b-lg"
                         onClick={() => setOpenDropdown(null)}
                       >
                         <span className="dropdown-bg absolute inset-0 bg-primary" />
