@@ -1,11 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { useEstimateModal } from "@/context/EstimateModalContext";
 
 export default function MobileBottomBar() {
   const barRef = useRef<HTMLDivElement>(null);
+  const { openModal } = useEstimateModal();
 
   useEffect(() => {
     // Premium entrance animation
@@ -53,8 +54,8 @@ export default function MobileBottomBar() {
         </a>
 
         {/* Quote/Estimate - Primary Action */}
-        <Link
-          href="/contact"
+        <button
+          onClick={openModal}
           className="group flex flex-col items-center justify-center py-3.5 active:bg-white/5 transition-all duration-200"
         >
           <div className="w-12 h-12 mb-1.5 flex items-center justify-center rounded-xl bg-primary text-white group-active:bg-primary/80 transition-all duration-200 shadow-lg shadow-primary/30">
@@ -66,7 +67,7 @@ export default function MobileBottomBar() {
             </svg>
           </div>
           <span className="text-[10px] font-semibold text-primary uppercase tracking-wider">Quote</span>
-        </Link>
+        </button>
       </div>
     </div>
   );

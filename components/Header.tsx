@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEstimateModal } from "@/context/EstimateModalContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -62,6 +63,7 @@ const CloseIcon = () => (
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const { openModal } = useEstimateModal();
   const headerRef = useRef<HTMLElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -327,12 +329,12 @@ export default function Header() {
           </nav>
 
           {/* CTA Button */}
-          <Link
-            href="/contact"
+          <button
+            onClick={openModal}
             className="hidden lg:inline-flex items-center px-5 py-2.5 bg-primary text-white font-semibold text-[13px] uppercase tracking-wider rounded hover:bg-primary/90 transition-all hover:scale-105"
           >
             Request an Estimate
-          </Link>
+          </button>
 
           {/* Mobile Menu Button */}
           <button
@@ -418,10 +420,12 @@ export default function Header() {
 
             {/* Primary CTA at Bottom */}
             <div ref={ctaButtonsRef} className="flex-shrink-0 p-5 border-t border-white/10 bg-black/30">
-              <Link
-                href="/contact"
+              <button
+                onClick={() => {
+                  closeMenu();
+                  setTimeout(() => openModal(), 400);
+                }}
                 className="flex items-center justify-center gap-2 w-full py-4 bg-primary text-white font-semibold text-sm uppercase tracking-wider rounded-xl hover:bg-primary/90 transition-all duration-300 shadow-lg shadow-primary/25"
-                onClick={closeMenu}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -430,7 +434,7 @@ export default function Header() {
                   <line x1="16" y1="17" x2="8" y2="17"/>
                 </svg>
                 Request Free Estimate
-              </Link>
+              </button>
             </div>
           </div>
         </>
