@@ -13,7 +13,7 @@ export default function MobileBottomBar() {
         bottom: 0,
         left: 0,
         right: 0,
-        zIndex: 90,
+        zIndex: 9999,
         backgroundColor: '#1a1714',
         borderTop: '1px solid rgba(255,255,255,0.1)',
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',

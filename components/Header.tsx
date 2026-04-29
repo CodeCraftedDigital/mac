@@ -68,7 +68,6 @@ export default function Header() {
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const menuItemsRef = useRef<HTMLDivElement[]>([]);
-  const ctaButtonsRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
   const [isVisible, setIsVisible] = useState(true);
@@ -160,57 +159,41 @@ export default function Header() {
     }
   }, [isVisible, isScrolled]);
 
-  // Mobile menu animation - premium slide from right with stagger
+  // Mobile menu animation - premium slide from right with stagger on nav items only
   useEffect(() => {
     if (mobileMenuOpen) {
       // Prevent body scroll when menu is open
       document.body.style.overflow = "hidden";
       
+      // Set initial states immediately to prevent flashes
+      if (overlayRef.current) gsap.set(overlayRef.current, { opacity: 0 });
+      if (mobileMenuRef.current) gsap.set(mobileMenuRef.current, { x: "100%" });
+      if (menuItemsRef.current.length > 0) gsap.set(menuItemsRef.current, { opacity: 0, x: 30 });
+      
       const tl = gsap.timeline();
       
       // Fade in overlay
       if (overlayRef.current) {
-        tl.fromTo(
-          overlayRef.current,
-          { opacity: 0 },
-          { opacity: 1, duration: 0.3, ease: "power2.out" },
-          0
-        );
+        tl.to(overlayRef.current, { opacity: 1, duration: 0.3, ease: "power2.out" }, 0);
       }
       
       // Slide in panel from right
       if (mobileMenuRef.current) {
-        tl.fromTo(
-          mobileMenuRef.current,
-          { x: "100%" },
-          { x: "0%", duration: 0.4, ease: "power3.out" },
-          0.1
-        );
+        tl.to(mobileMenuRef.current, { x: "0%", duration: 0.4, ease: "power3.out" }, 0.05);
       }
 
-      // Stagger menu items with premium feel
+      // Stagger menu items only - no CTA animation
       if (menuItemsRef.current.length > 0) {
-        tl.fromTo(
+        tl.to(
           menuItemsRef.current,
-          { opacity: 0, x: 40 },
           {
             opacity: 1,
             x: 0,
-            duration: 0.5,
-            stagger: 0.08,
+            duration: 0.4,
+            stagger: 0.06,
             ease: "power3.out",
           },
-          0.25
-        );
-      }
-
-      // Animate CTA buttons
-      if (ctaButtonsRef.current) {
-        tl.fromTo(
-          ctaButtonsRef.current,
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
-          0.5
+          0.2
         );
       }
     } else {
@@ -228,22 +211,14 @@ export default function Header() {
       onComplete: () => setMobileMenuOpen(false),
     });
 
-    if (ctaButtonsRef.current) {
-      tl.to(ctaButtonsRef.current, { opacity: 0, y: 10, duration: 0.2, ease: "power2.in" }, 0);
-    }
-
-    tl.to(
-      menuItemsRef.current.reverse(),
-      { opacity: 0, x: 20, duration: 0.2, stagger: 0.03, ease: "power2.in" },
-      0
-    );
-
+    // Slide out panel
     if (mobileMenuRef.current) {
-      tl.to(mobileMenuRef.current, { x: "100%", duration: 0.3, ease: "power3.in" }, 0.15);
+      tl.to(mobileMenuRef.current, { x: "100%", duration: 0.3, ease: "power3.in" }, 0);
     }
 
+    // Fade out overlay
     if (overlayRef.current) {
-      tl.to(overlayRef.current, { opacity: 0, duration: 0.25, ease: "power2.in" }, 0.2);
+      tl.to(overlayRef.current, { opacity: 0, duration: 0.25, ease: "power2.in" }, 0.05);
     }
   };
 
@@ -421,7 +396,7 @@ export default function Header() {
             </div>
 
             {/* Primary CTA at Bottom */}
-            <div ref={ctaButtonsRef} className="p-4 border-t border-white/10 bg-black/40">
+            <div className="p-4 border-t border-white/10 bg-black/40">
               <button
                 onClick={() => {
                   closeMenu();
