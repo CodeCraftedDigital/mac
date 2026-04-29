@@ -115,19 +115,48 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Animate header visibility - only on desktop (lg+)
+  // Animate header visibility - premium GSAP slide (desktop only)
   useEffect(() => {
     if (headerRef.current) {
       const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
       if (isDesktop) {
-        gsap.to(headerRef.current, {
-          y: isVisible ? 0 : "-100%",
-          duration: 0.4,
-          ease: "power3.out",
-        });
+        // Kill any existing animations to prevent conflicts
+        gsap.killTweensOf(headerRef.current);
+        
+        if (isVisible && isScrolled) {
+          // Slide down with premium easing when returning
+          gsap.fromTo(
+            headerRef.current,
+            { 
+              y: "-100%",
+              boxShadow: "0 0 0 rgba(0,0,0,0)",
+            },
+            {
+              y: 0,
+              boxShadow: "0 4px 30px rgba(0,0,0,0.3)",
+              duration: 0.6,
+              ease: "power4.out",
+            }
+          );
+        } else if (isVisible && !isScrolled) {
+          // At top of page - reset
+          gsap.to(headerRef.current, {
+            y: 0,
+            boxShadow: "0 0 0 rgba(0,0,0,0)",
+            duration: 0.3,
+            ease: "power2.out",
+          });
+        } else {
+          // Slide up smoothly when hiding
+          gsap.to(headerRef.current, {
+            y: "-100%",
+            duration: 0.45,
+            ease: "power3.inOut",
+          });
+        }
       }
     }
-  }, [isVisible]);
+  }, [isVisible, isScrolled]);
 
   // Mobile menu animation - premium slide from right with stagger
   useEffect(() => {
