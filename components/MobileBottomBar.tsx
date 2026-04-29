@@ -1,28 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
 import { useEstimateModal } from "@/context/EstimateModalContext";
 
 export default function MobileBottomBar() {
-  const barRef = useRef<HTMLDivElement>(null);
   const { openModal } = useEstimateModal();
-
-  useEffect(() => {
-    // Premium entrance animation
-    if (barRef.current) {
-      gsap.fromTo(
-        barRef.current,
-        { y: 100, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6, ease: "power3.out", delay: 0.5 }
-      );
-    }
-  }, []);
 
   return (
     <div
-      ref={barRef}
-      className="lg:hidden fixed bottom-0 inset-x-0 z-[90] bg-[#1a1714] backdrop-blur-lg border-t border-white/10"
+      className="lg:hidden fixed bottom-0 left-0 right-0 z-[90] bg-[#1a1714] border-t border-white/10"
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
     >
       {/* Quick Action Buttons - Compact */}
