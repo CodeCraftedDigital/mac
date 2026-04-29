@@ -6,9 +6,18 @@ export default function MobileBottomBar() {
   const { openModal } = useEstimateModal();
 
   return (
-    <div
-      className="lg:hidden fixed bottom-0 left-0 right-0 z-[90] bg-[#1a1714] border-t border-white/10"
-      style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+    <nav
+      className="block lg:hidden"
+      style={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 90,
+        backgroundColor: '#1a1714',
+        borderTop: '1px solid rgba(255,255,255,0.1)',
+        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+      }}
     >
       {/* Quick Action Buttons - Compact */}
       <div className="grid grid-cols-3">
@@ -55,6 +64,6 @@ export default function MobileBottomBar() {
           <span className="text-[9px] font-semibold text-primary uppercase tracking-wider">Quote</span>
         </button>
       </div>
-    </div>
+    </nav>
   );
 }

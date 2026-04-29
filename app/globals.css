@@ -322,14 +322,10 @@ img {
   }
 }
 
-/* Mobile Bottom Bar - Safe Area Support */
-.safe-area-bottom {
-  padding-bottom: env(safe-area-inset-bottom, 0);
-}
-
-/* Ensure content doesn't get hidden behind the mobile bottom bar */
+/* Mobile Bottom Bar - Always Fixed at Bottom */
 @media (max-width: 1023px) {
-  .pb-safe {
-    padding-bottom: calc(80px + env(safe-area-inset-bottom, 0));
+  body {
+    padding-bottom: 72px !important;
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
   }
 }
