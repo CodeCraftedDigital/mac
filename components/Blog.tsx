@@ -53,18 +53,39 @@ export default function Blog() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Header animation
       gsap.fromTo(
-        ".blog-card",
+        ".blog-header",
         { opacity: 0, y: 30 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.5,
-          stagger: 0.1,
-          ease: "power2.out",
+          duration: 0.8,
+          ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 75%",
+            start: "top 85%",
+          },
+        }
+      );
+
+      // Blog cards with premium stagger
+      gsap.fromTo(
+        ".blog-card",
+        { opacity: 0, y: 60, rotateX: 10 },
+        {
+          opacity: 1,
+          y: 0,
+          rotateX: 0,
+          duration: 0.7,
+          stagger: {
+            each: 0.1,
+            ease: "power2.out",
+          },
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".blog-grid",
+            start: "top 80%",
           },
         }
       );
@@ -77,7 +98,7 @@ export default function Blog() {
     <section ref={sectionRef} className="py-16 bg-[#3d3529]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-10">
+        <div className="blog-header flex flex-col md:flex-row md:items-center md:justify-between mb-10">
           <div>
             <p className="text-sm font-medium text-white/50 uppercase tracking-widest mb-2">
               — Resources —
@@ -96,12 +117,12 @@ export default function Blog() {
         </div>
 
         {/* Articles Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="blog-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {articles.map((article, index) => (
             <Link
               key={index}
               href={article.href}
-              className="blog-card group bg-[#2a2520] rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+              className="blog-card group bg-[#2a2520] rounded-lg overflow-hidden card-hover hover:shadow-2xl"
             >
               {/* Image */}
               <div className="relative h-40 overflow-hidden">
@@ -109,8 +130,9 @@ export default function Blog() {
                   src={article.image}
                   alt={article.title}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="object-cover img-hover-zoom"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent overlay-fade" />
               </div>
 
               {/* Content */}

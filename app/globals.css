@@ -61,6 +61,7 @@
   
   html {
     scroll-behavior: auto !important;
+    overflow-x: hidden;
   }
   
   html.lenis, html.lenis body {
@@ -85,6 +86,9 @@
   
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden;
+    min-height: 100vh;
+    min-height: 100dvh;
   }
 }
 
@@ -130,4 +134,202 @@ img {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* Premium animation utilities */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(211, 84, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(211, 84, 0, 0.5);
+  }
+}
+
+/* Dropdown menu animation */
+.animate-in {
+  animation-duration: 200ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-fill-mode: both;
+}
+
+.fade-in {
+  animation-name: fadeIn;
+}
+
+.slide-in-from-top-2 {
+  --tw-enter-translate-y: -8px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in.fade-in.slide-in-from-top-2 {
+  animation-name: slideInFromTop;
+}
+
+/* Smooth GPU-accelerated transforms */
+.will-change-transform {
+  will-change: transform;
+}
+
+/* Premium button hover effect */
+.btn-premium {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-premium::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.btn-premium:hover::after {
+  transform: translateX(100%);
+}
+
+/* Premium Image Hover System */
+.img-hover-zoom {
+  will-change: transform;
+  transform: scale(1) translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.group:hover .img-hover-zoom {
+  transform: scale(1.08) translateZ(0);
+}
+
+/* Card hover lift effect */
+.card-hover {
+  will-change: transform, box-shadow;
+  transform: translateY(0) translateZ(0);
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              box-shadow 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card-hover:hover {
+  transform: translateY(-8px) translateZ(0);
+}
+
+/* Smooth overlay fade */
+.overlay-fade {
+  opacity: 0;
+  transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.group:hover .overlay-fade {
+  opacity: 1;
+}
+
+/* Force GPU layer for all images in overflow hidden containers */
+.overflow-hidden img {
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Premium dropdown menu item animations */
+.dropdown-item {
+  transition: color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.dropdown-bg {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.dropdown-text {
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.dropdown-item:hover .dropdown-bg {
+  transform: scaleX(1);
+}
+
+.dropdown-item:hover .dropdown-text {
+  transform: translateX(6px);
+}
+
+/* Dropdown menu entrance animation */
+.dropdown-menu {
+  animation: dropdownSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: top center;
+}
+
+@keyframes dropdownSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Mobile Bottom Bar - Always Fixed at Bottom */
+@media (max-width: 1023px) {
+  body {
+    padding-bottom: 72px !important;
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
+  }
 }

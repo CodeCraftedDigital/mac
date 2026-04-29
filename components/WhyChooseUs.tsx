@@ -81,21 +81,52 @@ export default function WhyChooseUs() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Header animation
       gsap.fromTo(
-        ".feature-card",
-        { opacity: 0, y: 40 },
+        ".why-header",
+        { opacity: 0, y: 30 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.6,
-          stagger: 0.15,
-          ease: "power2.out",
+          duration: 0.8,
+          ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
+            start: "top 85%",
+          },
+        }
+      );
+
+      // Feature cards with stagger
+      gsap.fromTo(
+        ".feature-card",
+        { opacity: 0, y: 50, x: -20 },
+        {
+          opacity: 1,
+          y: 0,
+          x: 0,
+          duration: 0.7,
+          stagger: {
+            each: 0.12,
+            ease: "power2.out",
+          },
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".features-grid",
             start: "top 80%",
           },
         }
       );
+
+      // Icons subtle float animation
+      gsap.to(".feature-icon", {
+        y: -4,
+        duration: 2,
+        ease: "sine.inOut",
+        yoyo: true,
+        repeat: -1,
+        stagger: 0.3,
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -105,7 +136,7 @@ export default function WhyChooseUs() {
     <section ref={sectionRef} className="py-16 bg-[#2a2520]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-12">
+        <div className="why-header text-center mb-12">
           <p className="text-sm font-medium text-primary uppercase tracking-widest mb-3">
             — Why Choose Us —
           </p>
@@ -115,11 +146,11 @@ export default function WhyChooseUs() {
         </div>
 
         {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="features-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, index) => (
-            <div key={index} className="feature-card flex gap-4">
+            <div key={index} className="feature-card flex gap-4 group">
               <div className="flex-shrink-0">
-                <div className="w-16 h-16 rounded-lg bg-[#3d3529] border border-[#4a4035] flex items-center justify-center text-primary">
+                <div className="feature-icon w-16 h-16 rounded-lg bg-[#3d3529] border border-[#4a4035] flex items-center justify-center text-primary transition-all duration-500 group-hover:bg-primary/10 group-hover:border-primary/30">
                   <feature.Icon />
                 </div>
               </div>

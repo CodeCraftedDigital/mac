@@ -4,6 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 // SVG Icons
 const ChevronRightIcon = () => (
@@ -39,30 +42,70 @@ export default function Hero() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Animate hero content on load
-      gsap.fromTo(
-        ".hero-title",
-        { opacity: 0, y: 60 },
-        { opacity: 1, y: 0, duration: 1, ease: "power3.out", delay: 0.2 }
+      // Create a master timeline for coordinated animations
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+      // Background subtle zoom
+      tl.fromTo(
+        ".hero-bg",
+        { scale: 1.1 },
+        { scale: 1, duration: 2, ease: "power2.out" },
+        0
       );
 
-      gsap.fromTo(
+      // Title with split text feel - each line staggers
+      tl.fromTo(
+        ".hero-title",
+        { opacity: 0, y: 80, clipPath: "inset(100% 0 0 0)" },
+        { 
+          opacity: 1, 
+          y: 0, 
+          clipPath: "inset(0% 0 0 0)",
+          duration: 1.2 
+        },
+        0.3
+      );
+
+      // Description slides up smoothly
+      tl.fromTo(
         ".hero-description",
         { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.5 }
+        { opacity: 1, y: 0, duration: 0.8 },
+        0.7
       );
 
-      gsap.fromTo(
+      // Buttons with slight scale
+      tl.fromTo(
         ".hero-buttons",
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.7 }
+        { opacity: 0, y: 30, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.7 },
+        0.9
       );
 
-      gsap.fromTo(
-        ".hero-badges",
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.9 }
+      // Badges stagger in from left
+      tl.fromTo(
+        ".hero-badge",
+        { opacity: 0, x: -30 },
+        { 
+          opacity: 1, 
+          x: 0, 
+          duration: 0.5, 
+          stagger: 0.1 
+        },
+        1.1
       );
+
+      // Parallax scroll effect on background
+      gsap.to(".hero-bg", {
+        yPercent: 30,
+        ease: "none",
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
     }, heroRef);
 
     return () => ctx.revert();
@@ -71,12 +114,13 @@ export default function Hero() {
   return (
     <section ref={heroRef} className="relative min-h-screen flex items-center">
       {/* Background Image */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 overflow-hidden">
         <Image
           src="/images/hero-bg.jpg"
           alt="Excavator working in forest"
           fill
-          className="object-cover"
+          className="hero-bg object-cover will-change-transform"
+          style={{ backfaceVisibility: 'hidden' }}
           priority
         />
         {/* Darker overlay gradient */}
@@ -106,35 +150,39 @@ export default function Hero() {
           <div className="hero-buttons mt-8 flex flex-wrap gap-4">
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-7 py-3.5 bg-primary text-white font-semibold text-sm uppercase tracking-wider rounded hover:bg-primary/90 transition-all hover:scale-105 shadow-lg shadow-primary/30"
+              className="group inline-flex items-center gap-2 px-7 py-3.5 bg-primary text-white font-semibold text-sm uppercase tracking-wider rounded transition-all duration-300 ease-out hover:bg-primary/90 hover:scale-105 hover:shadow-xl shadow-lg shadow-primary/30"
             >
               Request an Estimate
-              <ChevronRightIcon />
+              <span className="transition-transform duration-300 group-hover:translate-x-1">
+                <ChevronRightIcon />
+              </span>
             </Link>
             <Link
               href="/our-work"
-              className="inline-flex items-center gap-2 px-7 py-3.5 bg-transparent border-2 border-white/40 text-white font-semibold text-sm uppercase tracking-wider rounded hover:bg-white/10 hover:border-white/60 transition-all"
+              className="group inline-flex items-center gap-2 px-7 py-3.5 bg-transparent border-2 border-white/40 text-white font-semibold text-sm uppercase tracking-wider rounded transition-all duration-300 ease-out hover:bg-white/10 hover:border-white/60"
             >
               View Our Work
-              <ChevronRightIcon />
+              <span className="transition-transform duration-300 group-hover:translate-x-1">
+                <ChevronRightIcon />
+              </span>
             </Link>
           </div>
 
           {/* Trust Badges */}
-          <div className="hero-badges mt-12 flex flex-wrap items-center gap-6 sm:gap-8">
-            <div className="flex items-center gap-2.5 text-white/80">
+          <div className="mt-12 flex flex-wrap items-center gap-6 sm:gap-8">
+            <div className="hero-badge flex items-center gap-2.5 text-white/80">
               <span className="text-primary"><MapPinIcon /></span>
               <span className="text-sm font-medium uppercase tracking-wide">
                 Proudly Serving Michigan
               </span>
             </div>
-            <div className="flex items-center gap-2.5 text-white/80">
+            <div className="hero-badge flex items-center gap-2.5 text-white/80">
               <span className="text-primary"><ShieldIcon /></span>
               <span className="text-sm font-medium uppercase tracking-wide">
                 Fully Insured
               </span>
             </div>
-            <div className="flex items-center gap-2.5 text-white/80">
+            <div className="hero-badge flex items-center gap-2.5 text-white/80">
               <span className="text-primary"><AwardIcon /></span>
               <span className="text-sm font-medium uppercase tracking-wide">
                 Quality Work, Done Right
