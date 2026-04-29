@@ -29,7 +29,6 @@ const CloseIcon = () => (
 export default function EstimateModal({ isOpen, onClose }: EstimateModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -47,27 +46,22 @@ export default function EstimateModal({ isOpen, onClose }: EstimateModalProps) {
 
   // Animate modal open
   useEffect(() => {
-    if (isOpen && overlayRef.current && modalRef.current && contentRef.current) {
+    if (isOpen && overlayRef.current && modalRef.current) {
+      // Set initial states immediately to prevent flash
+      gsap.set(overlayRef.current, { opacity: 0 });
+      gsap.set(modalRef.current, { opacity: 0, scale: 0.95, y: 20 });
+
       const tl = gsap.timeline();
 
-      tl.fromTo(
+      tl.to(
         overlayRef.current,
-        { opacity: 0 },
         { opacity: 1, duration: 0.3, ease: "power2.out" }
       );
 
-      tl.fromTo(
+      tl.to(
         modalRef.current,
-        { opacity: 0, scale: 0.95, y: 20 },
         { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: "power3.out" },
         0.1
-      );
-
-      tl.fromTo(
-        contentRef.current.children,
-        { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.3, stagger: 0.05, ease: "power2.out" },
-        0.2
       );
     }
   }, [isOpen]);
@@ -146,7 +140,7 @@ export default function EstimateModal({ isOpen, onClose }: EstimateModalProps) {
         </div>
 
         {/* Content */}
-        <div ref={contentRef} className="px-6 py-6">
+        <div className="px-6 py-6">
           {isSuccess ? (
             <div className="py-8 text-center">
               <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full bg-green-500/20 text-green-500">
