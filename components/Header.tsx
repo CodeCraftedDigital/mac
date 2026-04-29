@@ -368,12 +368,12 @@ export default function Header() {
           {/* Sheet Panel */}
           <div
             ref={mobileMenuRef}
-            className="lg:hidden fixed top-0 right-0 bottom-0 w-[88%] max-w-[380px] bg-gradient-to-b from-[#1a1714] to-[#0f0d0b] z-[101] flex flex-col shadow-2xl"
+            className="lg:hidden fixed inset-y-0 right-0 w-[85%] max-w-[340px] bg-[#1a1714] z-[101] flex flex-col h-full shadow-2xl"
           >
             {/* Header with Logo and Close */}
-            <div className="flex-shrink-0 flex items-center justify-between px-5 py-4 border-b border-white/5">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
               <Link href="/" onClick={closeMenu} className="flex-shrink-0">
-                <div className="relative w-[60px] h-[60px]">
+                <div className="relative w-[50px] h-[50px]">
                   <Image
                     src="/images/logo.png"
                     alt="Mac's Timber & Terra"
@@ -384,7 +384,7 @@ export default function Header() {
               </Link>
               <button
                 onClick={closeMenu}
-                className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 text-white/60 hover:text-white hover:bg-white/10 transition-all duration-300"
+                className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 text-white/70 hover:text-white hover:bg-white/15 transition-all duration-300"
                 aria-label="Close menu"
               >
                 <CloseIcon />
@@ -392,42 +392,44 @@ export default function Header() {
             </div>
 
             {/* Navigation Items - Scrollable */}
-            <nav className="flex-1 overflow-y-auto px-5 py-4 min-h-0">
-              {navItems.map((item) => (
-                <div key={item.label} ref={addToRefs}>
-                  <Link
-                    href={item.href}
-                    className={`group flex items-center justify-between py-4 border-b border-white/5 transition-all duration-300 ${
-                      item.active ? "text-primary" : "text-white/90"
-                    }`}
-                    onClick={closeMenu}
-                  >
-                    <span className="text-base font-heading font-bold uppercase tracking-wider group-hover:text-primary transition-colors">
-                      {item.label}
-                    </span>
-                    <svg 
-                      className="w-5 h-5 text-white/20 group-hover:text-primary group-hover:translate-x-1 transition-all duration-300" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24"
+            <div className="flex-1 overflow-y-auto overscroll-contain">
+              <nav className="px-5 py-3">
+                {navItems.map((item) => (
+                  <div key={item.label} ref={addToRefs}>
+                    <Link
+                      href={item.href}
+                      className={`group flex items-center justify-between py-3.5 border-b border-white/5 transition-all duration-300 ${
+                        item.active ? "text-primary" : "text-white/90"
+                      }`}
+                      onClick={closeMenu}
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </Link>
-                </div>
-              ))}
-            </nav>
+                      <span className="text-[15px] font-heading font-bold uppercase tracking-wider group-hover:text-primary transition-colors">
+                        {item.label}
+                      </span>
+                      <svg 
+                        className="w-4 h-4 text-white/20 group-hover:text-primary group-hover:translate-x-1 transition-all duration-300" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                  </div>
+                ))}
+              </nav>
+            </div>
 
             {/* Primary CTA at Bottom */}
-            <div ref={ctaButtonsRef} className="flex-shrink-0 p-5 border-t border-white/10 bg-black/30">
+            <div ref={ctaButtonsRef} className="p-4 border-t border-white/10 bg-black/40">
               <button
                 onClick={() => {
                   closeMenu();
                   setTimeout(() => openModal(), 400);
                 }}
-                className="flex items-center justify-center gap-2 w-full py-4 bg-primary text-white font-semibold text-sm uppercase tracking-wider rounded-xl hover:bg-primary/90 transition-all duration-300 shadow-lg shadow-primary/25"
+                className="flex items-center justify-center gap-2 w-full py-3.5 bg-primary text-white font-semibold text-sm uppercase tracking-wider rounded-lg hover:bg-primary/90 transition-all duration-300 shadow-lg shadow-primary/25"
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                   <polyline points="14,2 14,8 20,8"/>
                   <line x1="16" y1="13" x2="8" y2="13"/>
